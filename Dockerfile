@@ -1,7 +1,7 @@
 # Mule ESB Community Edition Docker image running on Alpine Linux and Oracle Java 8 (JDK).
 # The base image contains glibc, which is required for the Java Service wrapper that is used by Mule ESB.
 #
-FROM anapsix/alpine-java:jdk8
+FROM anapsix/alpine-java:8_jdk_unlimited
 
 MAINTAINER Ivan Krizsan, https://github.com/krizsan
 
@@ -29,6 +29,10 @@ RUN apk --no-cache update && \
     mkdir -p /var/empty && \
 # Create the user and group that will be used to run Mule ESB.
     addgroup ${RUN_AS_USER} && adduser -D -G ${RUN_AS_USER} ${RUN_AS_USER} && \
+# Needed for SSL support when downloading Mule ESB from HTTPS URL.
+    apk --no-cache add ca-certificates && \
+    update-ca-certificates && \
+    apk --no-cache add openssl && \
 # Install Mule ESB.
     wget ${MULE_DOWNLOAD_URL} && \
     tar xvzf mule-standalone-*.tar.gz && \
