@@ -28,7 +28,7 @@ RUN apk --no-cache update && \
 # Create directory used by NTPD.
     mkdir -p /var/empty && \
 # Create the user and group that will be used to run Mule ESB.
-    addgroup ${RUN_AS_USER} && adduser -D -G ${RUN_AS_USER} ${RUN_AS_USER} && \
+    addgroup ${RUN_AS_USER} && adduser -G ${RUN_AS_USER} -g "MuleESB User" -s /bin/sh -D ${RUN_AS_USER} && \
 # Needed for SSL support when downloading Mule ESB from HTTPS URL.
     apk --no-cache add ca-certificates && \
     update-ca-certificates && \
@@ -37,7 +37,8 @@ RUN apk --no-cache update && \
     wget ${MULE_DOWNLOAD_URL} && \
     tar xvzf mule-standalone-*.tar.gz && \
     rm mule-standalone-*.tar.gz && \
-    mv mule-standalone-* mule-standalone
+    mv mule-standalone-* mule-standalone && \
+    rm -rf ${MULE_HOME}/src
 
 # Copy the script used to launch Mule ESB when a container is started.
 COPY ./start-mule.sh /opt/
@@ -63,4 +64,3 @@ VOLUME ["${MULE_HOME}/logs", "${MULE_HOME}/conf", "${MULE_HOME}/apps", "${MULE_H
 EXPOSE 8081
 # JMX port.
 EXPOSE 1099
-
