@@ -1,0 +1,14 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: mule-deployment
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: mule
+    spec:
+      containers:
+      - name: mule
+        image: rakatti/mule-docker:latest
