@@ -18,7 +18,7 @@ node {
 
     stage "Deploy"
 
-        sh "kubectl apply -f deploy.yml"
+        sh "kubectl apply -f deploy.yaml"
         sh "kubectl rollout status deployment/mule-deployment"
         sh "kubectl apply -f service.yml"
         sh "kubectl get services"
