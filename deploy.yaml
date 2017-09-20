@@ -12,3 +12,6 @@ spec:
       containers:
       - name: mule
         image: rakatti/mule-docker:latest
+        imagePullPolicy: Always
+        imagePullSecrets:
+        - name: myregistrykey
